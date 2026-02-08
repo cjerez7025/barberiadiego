@@ -1,156 +1,171 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <title>Jere Barber | Reserva tu corte</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<title>Jere Barber | Agenda</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Configuración de marca -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#d4af37', // dorado
-                        dark: '#111111'
-                    }
-                }
-            }
-        }
-    </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#d4af37',
+        dark: '#111111'
+      }
+    }
+  }
+}
+</script>
 </head>
 
-<body class="bg-dark text-white font-sans">
+<body class="bg-dark text-white">
 
-<!-- ================= HEADER ================= -->
-<header class="fixed top-0 w-full bg-black bg-opacity-80 backdrop-blur z-50">
-    <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
-        <h1 class="text-xl md:text-2xl font-bold text-primary">
-            Jere Barber
-        </h1>
-
-        <a
-            href="https://wa.me/56956468989"
-            target="_blank"
-            class="bg-primary text-black px-4 py-2 rounded font-semibold hover:opacity-90"
-        >
-            Agendar
-        </a>
-    </div>
+<!-- HEADER -->
+<header class="fixed top-0 w-full bg-black bg-opacity-80 z-50">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold text-primary">Jere Barber</h1>
+  </div>
 </header>
 
-<!-- ================= HERO ================= -->
+<!-- HERO -->
 <section class="min-h-screen flex items-center justify-center bg-[url('https://images.unsplash.com/photo-1621607512214-68297480165e')] bg-cover bg-center">
-    <div class="bg-black bg-opacity-70 p-8 md:p-12 rounded-lg text-center mt-20 max-w-xl">
-        <h2 class="text-4xl md:text-5xl font-bold mb-4">
-            Jere Barber
-        </h2>
-
-        <p class="text-lg text-gray-300 mb-6">
-            Atención personalizada con horarios definidos.<br>
-            Agenda fácil y directa por WhatsApp.
-        </p>
-
-        <a
-            href="https://wa.me/56956468989"
-            target="_blank"
-            class="bg-primary text-black px-6 py-3 rounded text-lg font-semibold hover:opacity-90"
-        >
-            Agendar ahora
-        </a>
-    </div>
+  <div class="bg-black bg-opacity-70 p-10 rounded-lg text-center mt-20">
+    <h2 class="text-4xl font-bold mb-4">Agenda tu hora</h2>
+    <p class="text-gray-300">Revisa disponibilidad real antes de agendar</p>
+  </div>
 </section>
 
-<!-- ================= SERVICIOS ================= -->
-<section class="py-16 px-6 bg-dark">
-    <div class="max-w-6xl mx-auto">
-        <h3 class="text-3xl font-bold text-center text-primary mb-10">
-            Servicios
-        </h3>
+<!-- AGENDA -->
+<section class="py-20 px-6 bg-black">
+  <div class="max-w-2xl mx-auto bg-dark p-8 rounded-lg">
 
-        <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-            <div class="bg-black p-6 rounded text-center">
-                <h4 class="text-xl font-bold mb-2">Corte</h4>
-                <p class="text-gray-400 mb-4">Estilo clásico o moderno</p>
-                <a href="https://wa.me/56956468989" target="_blank"
-                   class="border border-primary px-4 py-2 rounded inline-block">
-                    Agendar
-                </a>
-            </div>
+    <h3 class="text-2xl font-bold text-primary mb-6 text-center">
+      Disponibilidad
+    </h3>
 
-            <div class="bg-black p-6 rounded text-center">
-                <h4 class="text-xl font-bold mb-2">Corte + Barba</h4>
-                <p class="text-gray-400 mb-4">Servicio completo</p>
-                <a href="https://wa.me/56956468989" target="_blank"
-                   class="border border-primary px-4 py-2 rounded inline-block">
-                    Agendar
-                </a>
-            </div>
-
-            <div class="bg-black p-6 rounded text-center">
-                <h4 class="text-xl font-bold mb-2">Corte Especial</h4>
-                <p class="text-gray-400 mb-4">Diseños y estilos personalizados</p>
-                <a href="https://wa.me/56956468989" target="_blank"
-                   class="border border-primary px-4 py-2 rounded inline-block">
-                    Agendar
-                </a>
-            </div>
-        </div>
+    <!-- CALENDARIO -->
+    <div class="mb-6">
+      <p class="mb-2 font-semibold">Selecciona un día</p>
+      <div id="calendar" class="grid grid-cols-7 gap-2 text-center"></div>
     </div>
+
+    <!-- SERVICIO -->
+    <label class="block mb-2">Servicio</label>
+    <select id="servicio" class="w-full p-3 mb-4 bg-black border border-gray-700 rounded">
+      <option value="">Selecciona servicio</option>
+      <option>Corte</option>
+      <option>Corte + Barba</option>
+      <option>Corte Especial</option>
+    </select>
+
+    <!-- HORAS -->
+    <label class="block mb-2">Hora disponible</label>
+    <select id="hora" class="w-full p-3 mb-6 bg-black border border-gray-700 rounded">
+      <option value="">Selecciona hora</option>
+    </select>
+
+    <button onclick="enviarWhatsApp()"
+      class="w-full bg-primary text-black py-3 rounded font-semibold hover:opacity-90">
+      Enviar solicitud por WhatsApp
+    </button>
+
+  </div>
 </section>
 
-<!-- ================= CONDICIONES ================= -->
-<section class="py-16 px-6 bg-black">
-    <div class="max-w-4xl mx-auto bg-dark p-8 rounded-lg">
-        <h3 class="text-2xl font-bold text-primary mb-6 text-center">
-            Información para agendar
-        </h3>
-
-        <p class="text-gray-300 mb-4">
-            Trabajo con horarios y servicios definidos para entregar una atención
-            ordenada y cómoda.
-        </p>
-
-        <p class="text-gray-300 font-semibold mb-2">
-            Para agendar indícame por favor:
-        </p>
-
-        <ul class="list-disc list-inside text-gray-300 space-y-2 mb-6">
-            <li>Día que te acomoda</li>
-            <li>Servicio (corte / corte + barba / corte especial)</li>
-            <li>Si el servicio es en casa o a domicilio</li>
-        </ul>
-
-        <div class="bg-black p-4 rounded mb-6">
-            <p class="text-primary font-semibold mb-1">⏰ Horarios</p>
-            <p class="text-gray-300">Lun – Vie: 15:00 a 21:00</p>
-            <p class="text-gray-300">Sáb: 11:00 a 18:00</p>
-        </div>
-
-        <p class="text-gray-400 text-sm mb-6">
-            Te respondo apenas tenga disponibilidad 👍
-        </p>
-
-        <div class="text-center">
-            <a
-                href="https://wa.me/56956468989"
-                target="_blank"
-                class="bg-primary text-black px-6 py-3 rounded font-semibold hover:opacity-90"
-            >
-                Agendar por WhatsApp
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- ================= FOOTER ================= -->
-<footer class="bg-dark py-8 text-center text-gray-400 text-sm">
-    <p>Jere Barber · Atención personalizada</p>
-    <p class="mt-2">📲 WhatsApp +56 9 5646 8989</p>
+<footer class="bg-dark py-6 text-center text-gray-400 text-sm">
+📲 WhatsApp +56 9 5646 8989
 </footer>
+
+<script>
+const calendarEl = document.getElementById('calendar');
+const horaSelect = document.getElementById('hora');
+let fechaSeleccionada = null;
+
+// Crear calendario simple (30 días desde hoy)
+function crearCalendario() {
+  calendarEl.innerHTML = '';
+  const hoy = new Date();
+
+  for (let i = 0; i < 30; i++) {
+    const fecha = new Date();
+    fecha.setDate(hoy.getDate() + i);
+
+    const diaSemana = fecha.getDay();
+    const btn = document.createElement('button');
+
+    btn.textContent = fecha.getDate();
+    btn.className = 'p-2 rounded bg-black border border-gray-700';
+
+    if (diaSemana === 0) {
+      btn.disabled = true;
+      btn.classList.add('opacity-30');
+    } else {
+      btn.onclick = () => seleccionarFecha(fecha, btn);
+    }
+
+    calendarEl.appendChild(btn);
+  }
+}
+
+function seleccionarFecha(fecha, btn) {
+  fechaSeleccionada = fecha;
+
+  document.querySelectorAll('#calendar button').forEach(b => {
+    b.classList.remove('bg-primary', 'text-black');
+  });
+
+  btn.classList.add('bg-primary', 'text-black');
+  cargarHoras(fecha);
+}
+
+function cargarHoras(fecha) {
+  horaSelect.innerHTML = '<option value="">Selecciona hora</option>';
+  const dia = fecha.getDay();
+
+  let inicio, fin;
+  if (dia >= 1 && dia <= 5) {
+    inicio = 15; fin = 21;
+  } else if (dia === 6) {
+    inicio = 11; fin = 18;
+  }
+
+  for (let h = inicio; h < fin; h++) {
+    const option = document.createElement('option');
+    option.value = `${h}:00`;
+    option.textContent = `${h}:00`;
+    horaSelect.appendChild(option);
+  }
+}
+
+function enviarWhatsApp() {
+  const servicio = document.getElementById('servicio').value;
+  const hora = horaSelect.value;
+
+  if (!fechaSeleccionada || !servicio || !hora) {
+    alert('Completa todos los datos');
+    return;
+  }
+
+  const fechaTxt = fechaSeleccionada.toLocaleDateString('es-CL');
+
+  const mensaje = `Hola 👋 quiero agendar en Jere Barber:
+
+📅 Día: ${fechaTxt}
+⏰ Hora: ${hora}
+✂️ Servicio: ${servicio}
+
+Quedo atento 👍`;
+
+  window.open(
+    `https://wa.me/56956468989?text=${encodeURIComponent(mensaje)}`,
+    '_blank'
+  );
+}
+
+crearCalendario();
+</script>
 
 </body>
 </html>
