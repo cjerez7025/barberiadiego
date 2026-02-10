@@ -548,42 +548,60 @@ async function enviarWhatsApp() {
 
 Quedo atento 👍`;
 
-    // Abrir WhatsApp
-    const numeroWhatsApp = '56956468989'; // Número de Jere Barber
+    // Abrir WhatsApp - MÉTODO MEJORADO PARA MÓVIL
+    const numeroWhatsApp = '56956468989';
     const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
     
     console.log('📱 Abriendo WhatsApp:', urlWhatsApp);
     
-    // Intentar abrir WhatsApp
-    const ventanaWhatsApp = window.open(urlWhatsApp, '_blank');
+    // Detectar si es móvil
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     
-    if (!ventanaWhatsApp) {
-      // Si el popup fue bloqueado
-      alert('⚠️ Por favor permite popups para abrir WhatsApp\n\nO copia este link:\n' + urlWhatsApp);
+    if (isMobile) {
+      // En móvil: usar window.location.href (más confiable)
+      console.log('📱 Móvil detectado - usando location.href');
+      window.location.href = urlWhatsApp;
+    } else {
+      // En desktop: intentar window.open
+      console.log('💻 Desktop - usando window.open');
+      const ventanaWhatsApp = window.open(urlWhatsApp, '_blank');
+      
+      if (!ventanaWhatsApp || ventanaWhatsApp.closed || typeof ventanaWhatsApp.closed === 'undefined') {
+        // Fallback si popup bloqueado
+        console.log('🔄 Popup bloqueado, usando location.href');
+        window.location.href = urlWhatsApp;
+      }
     }
 
-    // Limpiar selección
-    fechaSeleccionada = null;
-    servicioSelect.value = '';
-    horaSelect.innerHTML = '<option value="">Selecciona hora</option>';
-    document.getElementById('nombreCliente').value = '';
-    document.getElementById('telefonoCliente').value = '';
-    
-    document.querySelectorAll('#calendar .btn.selected')
-      .forEach(b => b.classList.remove('selected'));
-    
-    document.querySelectorAll('.hora-badge.active')
-      .forEach(b => {
-        b.classList.remove('active', 'btn-info');
-        b.classList.add('btn-outline-info');
+    // Limpiar selección (con delay para móvil)
+    setTimeout(() => {
+      fechaSeleccionada = null;
+      servicioSelect.value = '';
+      horaSelect.innerHTML = '<option value="">Selecciona hora</option>';
+      document.getElementById('nombreCliente').value = '';
+      document.getElementById('telefonoCliente').value = '';
+      
+      document.querySelectorAll('.calendar-day').forEach(day => {
+        day.classList.remove('selected');
       });
-
-    // Mostrar confirmación
-    alert('✅ Solicitud enviada correctamente\n\nAhora confirma por WhatsApp');
+      
+      // Restaurar botón
+      btnEnviar.disabled = false;
+      btnEnviar.innerHTML = textoOriginal;
+      
+      // Mostrar confirmación
+      if (!isMobile) {
+        alert('✅ Solicitud enviada\n\nAhora confirma por WhatsApp');
+      }
+    }, 500);
 
   } catch (err) {
     console.error('❌ Error guardando reserva:', err);
     console.error('Stack:', err.stack);
+    
+    // Restaurar botón
+    btnEnviar.disabled = false;
+    btnEnviar.innerHTML = textoOriginal;
     
     // Mensaje de error mejorado
     let mensajeError = '❌ Error al procesar la reserva:\n\n';
@@ -623,10 +641,16 @@ Quedo atento 👍`;
         
         console.log('📱 Abriendo WhatsApp (fallback):', urlWhatsApp);
         
-        const ventanaWhatsApp = window.open(urlWhatsApp, '_blank');
+        // Detectar móvil
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         
-        if (!ventanaWhatsApp) {
-          alert('⚠️ Por favor permite popups\n\nO copia este link:\n' + urlWhatsApp);
+        if (isMobile) {
+          window.location.href = urlWhatsApp;
+        } else {
+          const ventanaWhatsApp = window.open(urlWhatsApp, '_blank');
+          if (!ventanaWhatsApp) {
+            window.location.href = urlWhatsApp;
+          }
         }
       }
     } else {
