@@ -84,14 +84,14 @@
             </div>
 
             <!-- ENCABEZADO DÍAS DE LA SEMANA -->
-            <div class="row mb-3 text-center d-none d-md-flex">
-              <div class="col"><strong class="text-info">LUN</strong></div>
-              <div class="col"><strong class="text-info">MAR</strong></div>
-              <div class="col"><strong class="text-info">MIÉ</strong></div>
-              <div class="col"><strong class="text-info">JUE</strong></div>
-              <div class="col"><strong class="text-info">VIE</strong></div>
-              <div class="col"><strong class="text-primary">SÁB</strong></div>
-              <div class="col"><strong class="text-secondary">DOM</strong></div>
+            <div class="calendar-header mb-2">
+              <div class="calendar-weekday">LUN</div>
+              <div class="calendar-weekday">MAR</div>
+              <div class="calendar-weekday">MIÉ</div>
+              <div class="calendar-weekday">JUE</div>
+              <div class="calendar-weekday">VIE</div>
+              <div class="calendar-weekday">SÁB</div>
+              <div class="calendar-weekday">DOM</div>
             </div>
 
             <!-- CALENDARIO -->
@@ -109,11 +109,32 @@
             </div>
 
             <!-- HORA -->
-            <div class="mb-4">
+            <div class="mb-3">
               <label class="form-label">Hora disponible</label>
               <select id="hora" class="form-select">
                 <option value="">Selecciona hora</option>
               </select>
+            </div>
+
+            <!-- NOMBRE DEL CLIENTE -->
+            <div class="mb-3">
+              <label class="form-label">Tu nombre</label>
+              <input type="text" 
+                     id="nombreCliente" 
+                     class="form-control" 
+                     placeholder="Ej: Juan Pérez"
+                     required>
+            </div>
+
+            <!-- TELÉFONO DEL CLIENTE -->
+            <div class="mb-3">
+              <label class="form-label">Tu teléfono</label>
+              <input type="tel" 
+                     id="telefonoCliente" 
+                     class="form-control" 
+                     placeholder="Ej: +56 9 1234 5678"
+                     required>
+              <small class="text-muted">Formato: +56 9 XXXX XXXX</small>
             </div>
 
             <button class="btn btn-warning w-100 fw-bold py-2"
@@ -233,9 +254,9 @@
       <!-- Foto 1 -->
       <div class="col-6 col-md-4 col-lg-3">
         <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=400&h=400&fit=crop" 
+          <img src="assets/corte1.jpg" 
                class="img-fluid rounded shadow-lg" 
-               alt="Corte moderno"
+               alt="Corte profesional Jere Barber"
                data-bs-toggle="modal" 
                data-bs-target="#galleryModal"
                onclick="mostrarImagen(this.src)">
@@ -245,9 +266,9 @@
       <!-- Foto 2 -->
       <div class="col-6 col-md-4 col-lg-3">
         <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=400&h=400&fit=crop" 
+          <img src="assets/corte2.jpg" 
                class="img-fluid rounded shadow-lg" 
-               alt="Corte degradado"
+               alt="Corte degradado Jere Barber"
                data-bs-toggle="modal" 
                data-bs-target="#galleryModal"
                onclick="mostrarImagen(this.src)">
@@ -257,9 +278,9 @@
       <!-- Foto 3 -->
       <div class="col-6 col-md-4 col-lg-3">
         <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1621607512214-68297480165e?w=400&h=400&fit=crop" 
+          <img src="assets/corte3.jpg" 
                class="img-fluid rounded shadow-lg" 
-               alt="Barbería profesional"
+               alt="Corte con barba Jere Barber"
                data-bs-toggle="modal" 
                data-bs-target="#galleryModal"
                onclick="mostrarImagen(this.src)">
@@ -269,9 +290,9 @@
       <!-- Foto 4 -->
       <div class="col-6 col-md-4 col-lg-3">
         <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&h=400&fit=crop" 
+          <img src="assets/corte4.jpg" 
                class="img-fluid rounded shadow-lg" 
-               alt="Corte clásico"
+               alt="Corte moderno Jere Barber"
                data-bs-toggle="modal" 
                data-bs-target="#galleryModal"
                onclick="mostrarImagen(this.src)">
@@ -281,45 +302,9 @@
       <!-- Foto 5 -->
       <div class="col-6 col-md-4 col-lg-3">
         <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=400&h=400&fit=crop" 
+          <img src="assets/corte5.jpg" 
                class="img-fluid rounded shadow-lg" 
-               alt="Barba perfecta"
-               data-bs-toggle="modal" 
-               data-bs-target="#galleryModal"
-               onclick="mostrarImagen(this.src)">
-        </div>
-      </div>
-
-      <!-- Foto 6 -->
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1620331311520-246422fd82f9?w=400&h=400&fit=crop" 
-               class="img-fluid rounded shadow-lg" 
-               alt="Afeitado tradicional"
-               data-bs-toggle="modal" 
-               data-bs-target="#galleryModal"
-               onclick="mostrarImagen(this.src)">
-        </div>
-      </div>
-
-      <!-- Foto 7 -->
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1598217839260-81e3b5c85d37?w=400&h=400&fit=crop" 
-               class="img-fluid rounded shadow-lg" 
-               alt="Diseño personalizado"
-               data-bs-toggle="modal" 
-               data-bs-target="#galleryModal"
-               onclick="mostrarImagen(this.src)">
-        </div>
-      </div>
-
-      <!-- Foto 8 -->
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1627670297958-d0924c9e2c2e?w=400&h=400&fit=crop" 
-               class="img-fluid rounded shadow-lg" 
-               alt="Ambiente barbería"
+               alt="Corte especial Jere Barber"
                data-bs-toggle="modal" 
                data-bs-target="#galleryModal"
                onclick="mostrarImagen(this.src)">
@@ -344,6 +329,25 @@
   </div>
 </div>
 
+<!-- Botones Flotantes -->
+<div class="floating-buttons">
+  <!-- Instagram -->
+  <a href="https://www.instagram.com/jerebvrber" 
+     target="_blank" 
+     class="floating-btn floating-btn-instagram"
+     title="Síguenos en Instagram @jerebvrber">
+    <i class="bi bi-instagram"></i>
+  </a>
+  
+  <!-- WhatsApp -->
+  <a href="https://wa.me/56956468989?text=Hola!%20Quiero%20hacer%20una%20consulta" 
+     target="_blank" 
+     class="floating-btn floating-btn-whatsapp"
+     title="Escríbenos por WhatsApp">
+    <i class="bi bi-whatsapp"></i>
+  </a>
+</div>
+
 <!-- FOOTER -->
 <footer class="text-center py-4 bg-black text-secondary border-top border-warning">
   <div class="container">
@@ -365,9 +369,12 @@
       <div class="col-md-4 mb-3">
         <h6 class="text-warning">Síguenos</h6>
         <div class="d-flex justify-content-center gap-3">
-          <a href="#" class="text-warning"><i class="bi bi-instagram fs-4"></i></a>
-          <a href="#" class="text-warning"><i class="bi bi-facebook fs-4"></i></a>
-          <a href="#" class="text-warning"><i class="bi bi-tiktok fs-4"></i></a>
+          <a href="https://www.instagram.com/jerebvrber" target="_blank" class="text-warning" title="Instagram @jerebvrber">
+            <i class="bi bi-instagram fs-4"></i>
+          </a>
+          <a href="https://wa.me/56956468989" target="_blank" class="text-warning" title="WhatsApp">
+            <i class="bi bi-whatsapp fs-4"></i>
+          </a>
         </div>
       </div>
     </div>

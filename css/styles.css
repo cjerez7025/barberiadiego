@@ -40,6 +40,170 @@ footer img {
   transform: translateY(-2px);
 }
 
+/* Calendario Grid Mensual Compacto */
+.calendar-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  text-align: center;
+  font-weight: bold;
+  color: #17a2b8;
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+}
+
+.calendar-weekday {
+  padding: 8px 4px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  min-height: 70px;
+  background: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.calendar-day.empty {
+  background: transparent;
+  border: none;
+  cursor: default;
+}
+
+.calendar-day:not(.empty):not(.closed):hover {
+  border-color: #17a2b8;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+}
+
+.calendar-day.selected {
+  border-color: #ffc107;
+  background: rgba(255, 193, 7, 0.1);
+  transform: scale(1.05);
+}
+
+.calendar-day.closed {
+  background: #2a2a2a;
+  border-color: #444;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.calendar-day.full {
+  background: rgba(220, 53, 69, 0.1);
+  border-color: #dc3545;
+}
+
+.calendar-day.available {
+  border-color: #28a745;
+}
+
+.calendar-day.free {
+  border-color: #17a2b8;
+}
+
+.day-number {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.day-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: #28a745;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.day-indicator {
+  font-size: 0.65rem;
+  text-align: center;
+  margin-top: auto;
+  width: 100%;
+}
+
+.available-indicator {
+  color: #28a745;
+}
+
+.full-indicator {
+  color: #dc3545;
+}
+
+.closed-indicator {
+  color: #6c757d;
+}
+
+/* Selector de Horas */
+.horas-selector {
+  background: #1a1a1a;
+  border: 2px solid #17a2b8;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.horas-selector-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #333;
+  color: #17a2b8;
+}
+
+.horas-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 10px;
+}
+
+.hora-btn {
+  padding: 10px;
+  font-weight: 500;
+  border-color: #17a2b8;
+  color: #17a2b8;
+  transition: all 0.2s ease;
+}
+
+.hora-btn:hover {
+  background-color: #17a2b8;
+  color: white;
+  transform: scale(1.05);
+}
+
+.hora-btn-disabled {
+  padding: 10px;
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
 /* Estilos para el calendario semanal */
 .week-row {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -195,8 +359,110 @@ footer a:hover {
   transform: scale(1.2);
 }
 
+/* Botones Flotantes */
+.floating-buttons {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 1000;
+}
+
+.floating-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 28px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  animation: pulse-soft 2s infinite;
+}
+
+.floating-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  color: white;
+}
+
+.floating-btn-instagram {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.floating-btn-instagram:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  filter: brightness(1.2);
+}
+
+.floating-btn-whatsapp {
+  background: #25d366;
+}
+
+.floating-btn-whatsapp:hover {
+  background: #20ba5a;
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(255, 193, 7, 0.4);
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
+  /* Botones flotantes - Móvil */
+  .floating-buttons {
+    bottom: 15px;
+    right: 15px;
+    gap: 12px;
+  }
+  
+  .floating-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+  
+  /* Calendario Grid - Móvil */
+  .calendar-day {
+    min-height: 60px;
+    font-size: 0.85rem;
+  }
+  
+  .day-number {
+    font-size: 1rem;
+  }
+  
+  .day-badge {
+    width: 16px;
+    height: 16px;
+    font-size: 0.6rem;
+  }
+  
+  .day-indicator {
+    font-size: 0.55rem;
+  }
+  
+  .calendar-weekday {
+    font-size: 0.7rem;
+    padding: 6px 2px;
+  }
+  
+  .horas-buttons {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 8px;
+  }
+  
+  /* Calendario semanal - Móvil */
   #calendar .card {
     min-height: 150px !important;
   }

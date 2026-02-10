@@ -124,7 +124,7 @@ async function loadReservations() {
 }
 
 /*************************************************
- * CALENDARIO
+ * CALENDARIO - GRID MENSUAL COMPACTO
  *************************************************/
 async function renderCalendar() {
   await loadReservations();
@@ -139,135 +139,187 @@ async function renderCalendar() {
   });
 
   const firstDay = new Date(year, month, 1);
+  const startDay = (firstDay.getDay() + 6) % 7; // Lunes = 0
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  // Agrupar días por semanas
-  let semanaActual = [];
-  let todasLasSemanas = [];
-  
-  // Calcular día de inicio (lunes = 0)
-  const primerDiaSemana = (firstDay.getDay() + 6) % 7;
-  
-  // Agregar días vacíos al inicio
-  for (let i = 0; i < primerDiaSemana; i++) {
-    semanaActual.push(null);
-  }
-  
-  // Agregar todos los días del mes
-  for (let d = 1; d <= daysInMonth; d++) {
-    semanaActual.push(d);
-    
-    if (semanaActual.length === 7) {
-      todasLasSemanas.push([...semanaActual]);
-      semanaActual = [];
-    }
-  }
-  
-  // Completar última semana si es necesario
-  if (semanaActual.length > 0) {
-    while (semanaActual.length < 7) {
-      semanaActual.push(null);
-    }
-    todasLasSemanas.push(semanaActual);
+  // Crear grid del calendario
+  let gridHTML = '<div class="calendar-grid">';
+
+  // Espacios vacíos al inicio
+  for (let i = 0; i < startDay; i++) {
+    gridHTML += '<div class="calendar-day empty"></div>';
   }
 
-  // Renderizar cada semana
-  todasLasSemanas.forEach((semana, indexSemana) => {
-    // Crear fila para la semana
-    const semanaDiv = document.createElement('div');
-    semanaDiv.className = 'row mb-4 week-row';
+  // Días del mes
+  for (let d = 1; d <= daysInMonth; d++) {
+    const fecha = new Date(year, month, d);
     
-    // Renderizar cada día de la semana
-    semana.forEach((dia, indexDia) => {
-      const colDiv = document.createElement('div');
-      colDiv.className = 'col p-1';
-      
-      if (dia === null) {
-        // Día vacío
-        colDiv.innerHTML = '<div style="min-height: 100px;"></div>';
-      } else {
-        const fecha = new Date(year, month, dia);
-        const mm = String(month + 1).padStart(2, '0');
-        const dd = String(dia).padStart(2, '0');
-        const fechaKey = `${year}-${mm}-${dd}`;
-        
-        const diaSemana = fecha.getDay();
-        const isDomingo = diaSemana === 0;
-        const horasOcupadas = reservas[fechaKey] || [];
-        
-        // Determinar horario según día
-        let inicio, fin;
-        if (diaSemana >= 1 && diaSemana <= 5) {
-          inicio = 15; fin = 21;
-        } else if (diaSemana === 6) {
-          inicio = 11; fin = 18;
-        } else {
-          inicio = 0; fin = 0;
-        }
-        
-        // Nombre corto del día
-        const nombreDia = fecha.toLocaleDateString('es-CL', { weekday: 'short' }).toUpperCase();
-        
-        // Construir HTML del día
-        let horasHTML = '';
-        
-        if (isDomingo) {
-          horasHTML = '<div class="text-muted small mt-3">Cerrado</div>';
-        } else {
-          // Generar badges de horas (mostrar todas, ocupadas y disponibles)
-          for (let h = inicio; h < fin; h++) {
-            const hora = `${h}:00`;
-            const ocupada = horasOcupadas.includes(hora);
-            
-            if (ocupada) {
-              // Hora ocupada - mostrar deshabilitada
-              horasHTML += `
-                <button 
-                  class="btn btn-sm btn-outline-secondary mb-1 hora-ocupada" 
-                  disabled
-                  style="font-size: 0.75rem; padding: 4px 8px; width: 100%; text-decoration: line-through; opacity: 0.5;">
-                  ${hora}
-                </button>
-              `;
-            } else {
-              // Hora disponible - clickable
-              horasHTML += `
-                <button 
-                  class="btn btn-sm btn-outline-info mb-1 hora-badge" 
-                  onclick="seleccionarHoraDirecta('${fechaKey}', '${hora}')"
-                  style="font-size: 0.75rem; padding: 4px 8px; width: 100%;">
-                  ${hora}
-                </button>
-              `;
-            }
-          }
-          
-          if (horasHTML === '') {
-            horasHTML = '<div class="text-danger small mt-3">Sin horas disponibles</div>';
-          }
-        }
-        
-        // Color del encabezado según día
-        let headerClass = isDomingo ? 'bg-secondary' : indexDia === 5 ? 'bg-primary' : 'bg-dark';
-        
-        colDiv.innerHTML = `
-          <div class="card h-100 ${isDomingo ? 'border-secondary' : 'border-info'}" style="min-height: 200px;">
-            <div class="card-header text-center ${headerClass} text-white py-2">
-              <small class="d-block" style="font-size: 0.7rem;">${nombreDia}</small>
-              <strong style="font-size: 1.2rem;">${dia}</strong>
-            </div>
-            <div class="card-body p-2 d-flex flex-column gap-1" style="overflow-y: auto; max-height: 300px;">
-              ${horasHTML}
-            </div>
-          </div>
-        `;
-      }
-      
-      semanaDiv.appendChild(colDiv);
-    });
+    const mm = String(month + 1).padStart(2, '0');
+    const dd = String(d).padStart(2, '0');
+    const fechaKey = `${year}-${mm}-${dd}`;
     
-    calendarEl.appendChild(semanaDiv);
+    const dia = fecha.getDay();
+    const isDomingo = dia === 0;
+    const horasOcupadas = reservas[fechaKey] || [];
+    
+    // Calcular horas disponibles
+    let inicio, fin;
+    if (dia >= 1 && dia <= 5) {
+      inicio = 15; fin = 21;
+    } else if (dia === 6) {
+      inicio = 11; fin = 18;
+    } else {
+      inicio = 0; fin = 0;
+    }
+    
+    const totalHoras = fin - inicio;
+    const horasDisponibles = totalHoras - horasOcupadas.length;
+    
+    // Determinar clase y badge
+    let dayClass = 'calendar-day';
+    let badge = '';
+    let indicator = '';
+    
+    if (isDomingo) {
+      dayClass += ' closed';
+      indicator = '<div class="day-indicator closed-indicator">Cerrado</div>';
+    } else if (horasDisponibles === 0) {
+      dayClass += ' full';
+      indicator = '<div class="day-indicator full-indicator">Completo</div>';
+    } else if (horasOcupadas.length > 0) {
+      dayClass += ' available';
+      indicator = `<div class="day-indicator available-indicator">${horasDisponibles} disponibles</div>`;
+      badge = `<span class="day-badge">${horasDisponibles}</span>`;
+    } else {
+      dayClass += ' free';
+    }
+    
+    gridHTML += `
+      <div class="${dayClass}" 
+           data-fecha="${fechaKey}"
+           onclick="mostrarHorasDelDia('${fechaKey}', '${d}')">
+        <div class="day-number">${d}</div>
+        ${badge}
+        ${indicator}
+      </div>
+    `;
+  }
+
+  gridHTML += '</div>';
+  
+  // Agregar selector de horas (oculto inicialmente)
+  gridHTML += `
+    <div id="horasSelector" class="horas-selector" style="display: none;">
+      <div class="horas-selector-header">
+        <h5 class="mb-0">Selecciona una hora</h5>
+        <button class="btn-close btn-close-white" onclick="cerrarHorasSelector()"></button>
+      </div>
+      <div id="horasBtns" class="horas-buttons"></div>
+    </div>
+  `;
+  
+  calendarEl.innerHTML = gridHTML;
+}
+
+/*************************************************
+ * MOSTRAR HORAS DEL DÍA
+ *************************************************/
+function mostrarHorasDelDia(fechaKey, dia) {
+  const [y, m, d] = fechaKey.split('-');
+  const fecha = new Date(y, m - 1, d);
+  const diaSemana = fecha.getDay();
+  
+  // No hacer nada si es domingo
+  if (diaSemana === 0) return;
+  
+  // Marcar fecha seleccionada
+  fechaSeleccionada = fechaKey;
+  
+  // Resaltar día seleccionado
+  document.querySelectorAll('.calendar-day').forEach(day => {
+    day.classList.remove('selected');
   });
+  document.querySelector(`[data-fecha="${fechaKey}"]`).classList.add('selected');
+  
+  // Determinar horario
+  let inicio, fin;
+  if (diaSemana >= 1 && diaSemana <= 5) {
+    inicio = 15; fin = 21;
+  } else if (diaSemana === 6) {
+    inicio = 11; fin = 18;
+  }
+  
+  const horasOcupadas = reservas[fechaKey] || [];
+  
+  // Generar botones de horas
+  let horasHTML = '';
+  for (let h = inicio; h < fin; h++) {
+    const hora = `${h}:00`;
+    const ocupada = horasOcupadas.includes(hora);
+    
+    if (ocupada) {
+      horasHTML += `
+        <button class="btn btn-outline-secondary hora-btn-disabled" disabled>
+          ${hora} <span class="badge bg-danger ms-1">✕</span>
+        </button>
+      `;
+    } else {
+      horasHTML += `
+        <button class="btn btn-outline-info hora-btn" 
+                onclick="seleccionarHoraYCerrar('${fechaKey}', '${hora}')">
+          ${hora}
+        </button>
+      `;
+    }
+  }
+  
+  // Mostrar selector de horas
+  const selector = document.getElementById('horasSelector');
+  const horasBtns = document.getElementById('horasBtns');
+  
+  const fechaFormato = fecha.toLocaleDateString('es-CL', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long'
+  });
+  
+  document.querySelector('.horas-selector-header h5').textContent = 
+    `Horas disponibles - ${fechaFormato}`;
+  
+  horasBtns.innerHTML = horasHTML;
+  selector.style.display = 'block';
+  
+  // Scroll al selector
+  selector.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+/*************************************************
+ * CERRAR SELECTOR DE HORAS
+ *************************************************/
+function cerrarHorasSelector() {
+  document.getElementById('horasSelector').style.display = 'none';
+  
+  // Desmarcar día seleccionado
+  document.querySelectorAll('.calendar-day').forEach(day => {
+    day.classList.remove('selected');
+  });
+}
+
+/*************************************************
+ * SELECCIONAR HORA Y CERRAR
+ *************************************************/
+function seleccionarHoraYCerrar(fechaKey, hora) {
+  // Marcar fecha y hora seleccionadas
+  fechaSeleccionada = fechaKey;
+  horaSelect.innerHTML = `<option value="${hora}" selected>${hora}</option>`;
+  
+  // Cerrar selector
+  cerrarHorasSelector();
+  
+  // Scroll al formulario
+  servicioSelect.focus();
+  
+  console.log(`✅ Seleccionado: ${fechaKey} a las ${hora}`);
 }
 
 /*************************************************
@@ -393,9 +445,24 @@ function cargarHoras(fechaKey) {
 async function enviarWhatsApp() {
   const servicio = servicioSelect.value;
   const hora = horaSelect.value;
+  const nombreCliente = document.getElementById('nombreCliente').value.trim();
+  const telefonoCliente = document.getElementById('telefonoCliente').value.trim();
 
+  // Validar todos los campos
   if (!fechaSeleccionada || !servicio || !hora) {
     alert('⚠️ Por favor completa todos los datos:\n- Fecha\n- Servicio\n- Hora');
+    return;
+  }
+
+  if (!nombreCliente) {
+    alert('⚠️ Por favor ingresa tu nombre');
+    document.getElementById('nombreCliente').focus();
+    return;
+  }
+
+  if (!telefonoCliente) {
+    alert('⚠️ Por favor ingresa tu teléfono');
+    document.getElementById('telefonoCliente').focus();
     return;
   }
 
@@ -409,7 +476,9 @@ async function enviarWhatsApp() {
   const reservaData = {
     date: fechaSeleccionada,
     time: hora,
-    service: servicio
+    service: servicio,
+    name: nombreCliente,
+    phone: telefonoCliente
   };
 
   console.log('📤 Enviando reserva:', reservaData);
@@ -474,6 +543,9 @@ async function enviarWhatsApp() {
 ⏰ Hora: ${hora}
 ✂️ Servicio: ${servicio}
 
+👤 Nombre: ${nombreCliente}
+📱 Teléfono: ${telefonoCliente}
+
 Quedo atento 👍`;
 
     // Abrir WhatsApp
@@ -494,9 +566,17 @@ Quedo atento 👍`;
     fechaSeleccionada = null;
     servicioSelect.value = '';
     horaSelect.innerHTML = '<option value="">Selecciona hora</option>';
+    document.getElementById('nombreCliente').value = '';
+    document.getElementById('telefonoCliente').value = '';
     
     document.querySelectorAll('#calendar .btn.selected')
       .forEach(b => b.classList.remove('selected'));
+    
+    document.querySelectorAll('.hora-badge.active')
+      .forEach(b => {
+        b.classList.remove('active', 'btn-info');
+        b.classList.add('btn-outline-info');
+      });
 
     // Mostrar confirmación
     alert('✅ Solicitud enviada correctamente\n\nAhora confirma por WhatsApp');
@@ -532,6 +612,9 @@ Quedo atento 👍`;
 📅 Día: ${fechaTxt}
 ⏰ Hora: ${hora}
 ✂️ Servicio: ${servicio}
+
+👤 Nombre: ${nombreCliente}
+📱 Teléfono: ${telefonoCliente}
 
 Quedo atento 👍`;
 
