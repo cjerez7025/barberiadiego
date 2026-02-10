@@ -548,32 +548,32 @@ async function enviarWhatsApp() {
 
 Quedo atento 👍`;
 
-    // Abrir WhatsApp - MÉTODO MEJORADO PARA MÓVIL
+    // Abrir WhatsApp - MÉTODO OPTIMIZADO PARA MÓVIL
     const numeroWhatsApp = '56956468989';
     const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
     
     console.log('📱 Abriendo WhatsApp:', urlWhatsApp);
     
-    // Detectar si es móvil
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    // Crear link invisible y hacer click (funciona mejor en móviles)
+    const link = document.createElement('a');
+    link.href = urlWhatsApp;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
     
-    if (isMobile) {
-      // En móvil: usar window.location.href (más confiable)
-      console.log('📱 Móvil detectado - usando location.href');
-      window.location.href = urlWhatsApp;
-    } else {
-      // En desktop: intentar window.open
-      console.log('💻 Desktop - usando window.open');
-      const ventanaWhatsApp = window.open(urlWhatsApp, '_blank');
-      
-      if (!ventanaWhatsApp || ventanaWhatsApp.closed || typeof ventanaWhatsApp.closed === 'undefined') {
-        // Fallback si popup bloqueado
-        console.log('🔄 Popup bloqueado, usando location.href');
-        window.location.href = urlWhatsApp;
-      }
-    }
+    // Agregar al DOM temporalmente
+    document.body.appendChild(link);
+    
+    // Simular click
+    link.click();
+    
+    // Remover después de un momento
+    setTimeout(() => {
+      document.body.removeChild(link);
+    }, 100);
+    
+    console.log('✅ WhatsApp abierto');
 
-    // Limpiar selección (con delay para móvil)
+    // Limpiar selección (con delay)
     setTimeout(() => {
       fechaSeleccionada = null;
       servicioSelect.value = '';
@@ -588,11 +588,6 @@ Quedo atento 👍`;
       // Restaurar botón
       btnEnviar.disabled = false;
       btnEnviar.innerHTML = textoOriginal;
-      
-      // Mostrar confirmación
-      if (!isMobile) {
-        alert('✅ Solicitud enviada\n\nAhora confirma por WhatsApp');
-      }
     }, 500);
 
   } catch (err) {
@@ -641,17 +636,14 @@ Quedo atento 👍`;
         
         console.log('📱 Abriendo WhatsApp (fallback):', urlWhatsApp);
         
-        // Detectar móvil
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        
-        if (isMobile) {
-          window.location.href = urlWhatsApp;
-        } else {
-          const ventanaWhatsApp = window.open(urlWhatsApp, '_blank');
-          if (!ventanaWhatsApp) {
-            window.location.href = urlWhatsApp;
-          }
-        }
+        // Crear link invisible
+        const link = document.createElement('a');
+        link.href = urlWhatsApp;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => document.body.removeChild(link), 100);
       }
     } else {
       mensajeError += err.message;
