@@ -477,10 +477,18 @@ async function enviarWhatsApp() {
 Quedo atento 👍`;
 
     // Abrir WhatsApp
-    window.open(
-      `https://wa.me/56956468989?text=${encodeURIComponent(mensaje)}`,
-      '_blank'
-    );
+    const numeroWhatsApp = '56956468989'; // Número de Jere Barber
+    const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+    
+    console.log('📱 Abriendo WhatsApp:', urlWhatsApp);
+    
+    // Intentar abrir WhatsApp
+    const ventanaWhatsApp = window.open(urlWhatsApp, '_blank');
+    
+    if (!ventanaWhatsApp) {
+      // Si el popup fue bloqueado
+      alert('⚠️ Por favor permite popups para abrir WhatsApp\n\nO copia este link:\n' + urlWhatsApp);
+    }
 
     // Limpiar selección
     fechaSeleccionada = null;
@@ -527,10 +535,16 @@ Quedo atento 👍`;
 
 Quedo atento 👍`;
 
-        window.open(
-          `https://wa.me/56956468989?text=${encodeURIComponent(mensaje)}`,
-          '_blank'
-        );
+        const numeroWhatsApp = '56956468989';
+        const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+        
+        console.log('📱 Abriendo WhatsApp (fallback):', urlWhatsApp);
+        
+        const ventanaWhatsApp = window.open(urlWhatsApp, '_blank');
+        
+        if (!ventanaWhatsApp) {
+          alert('⚠️ Por favor permite popups\n\nO copia este link:\n' + urlWhatsApp);
+        }
       }
     } else {
       mensajeError += err.message;
