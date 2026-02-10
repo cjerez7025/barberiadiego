@@ -1,0 +1,216 @@
+body {
+  background: #111;
+}
+
+/* Logo styles */
+.navbar-brand img {
+  border: 2px solid #ffc107;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover img {
+  transform: scale(1.1);
+}
+
+footer img {
+  border: 2px solid #ffc107;
+}
+
+.hero {
+  min-height: 100vh;
+  background: url("https://images.unsplash.com/photo-1621607512214-68297480165e") center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-box {
+  background: rgba(0,0,0,.7);
+  padding: 3rem;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.card {
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+/* Estilos para el calendario semanal */
+.week-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+}
+
+#calendar .card {
+  background-color: #1a1a1a;
+}
+
+#calendar .card-header {
+  border-bottom: 2px solid #17a2b8;
+}
+
+/* Horas disponibles */
+#calendar .hora-badge {
+  border-color: #17a2b8;
+  color: #17a2b8;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+#calendar .hora-badge:hover {
+  background-color: #17a2b8;
+  color: white;
+  transform: scale(1.05);
+}
+
+#calendar .hora-badge.active {
+  background-color: #17a2b8;
+  color: white;
+  border-color: #17a2b8;
+}
+
+/* Horas ocupadas */
+#calendar .hora-ocupada {
+  border-color: #6c757d;
+  color: #6c757d;
+  background-color: rgba(108, 117, 125, 0.1);
+  cursor: not-allowed;
+  position: relative;
+}
+
+#calendar .hora-ocupada::after {
+  content: '✕';
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #dc3545;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+/* Scroll suave en cards */
+#calendar .card-body {
+  scrollbar-width: thin;
+  scrollbar-color: #17a2b8 #1a1a1a;
+}
+
+#calendar .card-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+#calendar .card-body::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+#calendar .card-body::-webkit-scrollbar-thumb {
+  background: #17a2b8;
+  border-radius: 4px;
+}
+
+/* Botón seleccionar */
+#calendar .btn.selected {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+  font-weight: bold;
+  border-color: #ffc107 !important;
+}
+
+/* Sección de Servicios */
+#servicios .card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#servicios .card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(255, 193, 7, 0.3);
+}
+
+#servicios .bi {
+  transition: transform 0.3s ease;
+}
+
+#servicios .card:hover .bi {
+  transform: scale(1.1);
+}
+
+/* Galería */
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.gallery-item img {
+  transition: transform 0.3s ease, filter 0.3s ease;
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.1);
+  filter: brightness(1.2);
+}
+
+.gallery-item::after {
+  content: '🔍';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover::after {
+  opacity: 1;
+}
+
+/* Modal de galería */
+#galleryModal .modal-content {
+  border: 2px solid #ffc107;
+}
+
+#galleryModal img {
+  max-height: 80vh;
+  width: auto;
+}
+
+/* Footer */
+footer a {
+  text-decoration: none;
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+footer a:hover {
+  transform: scale(1.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  #calendar .card {
+    min-height: 150px !important;
+  }
+  
+  #calendar .card-body {
+    max-height: 200px !important;
+  }
+  
+  #calendar .hora-badge {
+    font-size: 0.7rem !important;
+    padding: 3px 6px !important;
+  }
+  
+  .gallery-item img {
+    height: 150px;
+  }
+}
